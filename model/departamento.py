@@ -1,30 +1,30 @@
 class Departamento:
     def __init__(self, nome):
-        self.nome = nome
-        self.cursos = []
-        self.funcionarios = []
-        self.documentos = []
+        self.__nome = nome
+        self.__cursos = []
+        self.__funcionarios = []
+        self.__documentos = []
 
     def getNome():
-        return self.nome
+        return self.__nome
 
     def setNome(nome):
-        self.nome = nome
+        self.__nome = nome
 
     def getCursos():
-        return self.cursos
+        return self.__cursos
 
     def setCursos(cursos):
-        self.cursos = cursos
+        self.__cursos = cursos
 
     def getFuncionarios():
-        return self.funcionarios
+        return self.__funcionarios
 
     def setFuncionarios(funcionarios):
-        self.funcionarios = funcionarios
+        self.__funcionarios = funcionarios
 
     def getDocumentos():
-        return self.documentos
+        return self.__documentos
 
     def setDocumentos(documentos):
-        self.documentos = documentos
+        self.__documentos = documentos

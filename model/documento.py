@@ -1,16 +1,16 @@
 class Documento:
     def __init__(self, nome, caminho):
-        self.nome = nome
-        self.caminho = caminho
+        self.__nome = nome
+        self.__caminho = caminho
 
     def getNome():
-        return self.nome
+        return self.__nome
 
     def setNome(nome):
-        self.nome = nome
+        self.__nome = nome
 
     def getCaminho():
-        return self.caminho
+        return self.__caminho
 
     def setCaminho(caminho):
-        set.caminho = caminho
+        set.__caminho = caminho
