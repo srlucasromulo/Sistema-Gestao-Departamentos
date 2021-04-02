@@ -1,9 +1,17 @@
 class Departamento:
-    def __init__(self, nome):
-        self.__nome = nome
+
+    __instancia = None
+
+    def __init__(self):
+        self.__nome = "Departamento tal da UFSJ"
         self.__cursos = []
         self.__funcionarios = []
         self.__documentos = []
+
+    def getInstancia():     # Singleton
+        if self.__instancia is None:
+            self.__instancia = Departamento()
+        return self.__instancia
 
     def getNome():
         return self.__nome
