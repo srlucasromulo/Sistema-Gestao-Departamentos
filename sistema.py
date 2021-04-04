@@ -21,7 +21,6 @@ def getEntrada():
 
 
 def getDocumento():
-
     print("Digite as informacoes do arquivo:")
 
     print("Nome: ")
@@ -43,17 +42,49 @@ def getDocumento():
     data = input()
     dia, mes, ano = map(int, data.split('/'))
     data = datetime(ano, mes, dia)
-    if data > datetime.today(): # acertar isso
+    if data > datetime.today():  # acertar isso
         raise Exception
 
     return nome, caminho, tipo, data
 
 
 def readDocumento():
-    pass
+    creator = Creator()
+    nome = None
+    caminho = None
+    tipo = None
+    data = None
+
+    print("Buscar por qual informacao?:")
+    print("1) Nome")
+    print("2) Caminho")
+    print("3) Tipo")
+    print("4) Data")
+    opt = int(input())
+
+    if opt not in [1, 2, 3, 4]:
+        print("Opcao invalida!!")
+    else:
+        if opt == 1:
+            print("Digite o nome:")
+            nome = input()
+        if opt == 2:
+            print("Digite o caminho:")
+            caminho = input()
+            caminho = "/home/lucasromulo/tmp/PDFs/" + caminho
+        if opt == 3:
+            print("Digite o tipo:")
+            tipo = input()
+        if opt == 4:
+            print("Digite a data(DD/MM/YYYY):")
+            data = input()
+            dia, mes, ano = map(int, data.split('/'))
+            data = datetime(ano, mes, dia)
+
+    return creator.newDocumento(nome, caminho, tipo, data)
+
 
 def main():
-
     creator = Creator()
     departamento = Creator().getDepartamento()
 
@@ -64,13 +95,15 @@ def main():
         if opt == 1:
             try:
                 info = getDocumento()
-                documento = creator.newDocumento(info[0],info[1],info[2],info[3])
+                documento = creator.newDocumento(info[0], info[1], info[2], info[3])
                 DepartamentoController.addDocumento(departamento, documento)
             except Exception:
                 pass
 
         if opt == 2:
-            readDocumento()
+            documento = readDocumento()
+            documentos = DepartamentoController.readDocumento(departamento, documento)
+            print(documentos)
 
         opt = getEntrada()
 
