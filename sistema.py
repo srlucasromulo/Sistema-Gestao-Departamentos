@@ -1,5 +1,6 @@
 from model.creator.creator import Creator
 from model.departamento import Departamento
+from controller.departamento import DepartamentoController
 from datetime import datetime
 
 
@@ -64,6 +65,7 @@ def main():
             try:
                 info = getDocumento()
                 documento = creator.newDocumento(info[0],info[1],info[2],info[3])
+                DepartamentoController.addDocumento(departamento, documento)
             except Exception:
                 pass
 
