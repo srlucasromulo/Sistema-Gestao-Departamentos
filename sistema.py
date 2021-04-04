@@ -1,23 +1,7 @@
-from model.creator.creator import Creator
-from model.departamento import Departamento
 from controller.departamento import DepartamentoController
+from model.creator.creator import Creator
+from view.documento import DocumentoView
 from datetime import datetime
-
-
-def getEntrada():
-    opt = None
-
-    print("Selecione a opcao:")
-    print("1) Cadastrar documento")
-    print("2) Visualizar documento")
-    print("0) Sair")
-    opt = int(input())
-
-    while opt not in [0, 1, 2]:
-        print("Entrada invalida!! Digite outra")
-        opt = int(input())
-
-    return opt
 
 
 def getDocumento():
@@ -84,6 +68,22 @@ def readDocumento():
     return creator.newDocumento(nome, caminho, tipo, data)
 
 
+def getEntrada():
+    opt = None
+
+    print("Selecione a opcao:")
+    print("1) Cadastrar documento")
+    print("2) Visualizar documento")
+    print("0) Sair")
+    opt = int(input())
+
+    while opt not in [0, 1, 2]:
+        print("Entrada invalida!! Digite outra")
+        opt = int(input())
+
+    return opt
+
+
 def main():
     creator = Creator()
     departamento = Creator().getDepartamento()
@@ -103,7 +103,7 @@ def main():
         if opt == 2:
             documento = readDocumento()
             documentos = DepartamentoController.readDocumento(departamento, documento)
-            print(documentos)
+            DocumentoView.toString(documentos)
 
         opt = getEntrada()
 

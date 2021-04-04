@@ -3,6 +3,7 @@ from model.departamento import Departamento
 
 
 class Creator:
+
     def __init__(self):
         pass
 

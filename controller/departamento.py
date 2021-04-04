@@ -1,4 +1,5 @@
 class DepartamentoController:
+
     def __init__(self):
         pass
 

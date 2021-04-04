@@ -1,4 +1,5 @@
 class Documento:
+
     def __init__(self, nome, caminho, tipo, data):
         self.__nome = nome
         self.__caminho = caminho
