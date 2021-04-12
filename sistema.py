@@ -3,6 +3,7 @@ from controller.departamento import DepartamentoController
 from controller.documento import DocumentoController
 from model.creator.creator import Creator
 from view.documento import DocumentoView
+from datetime import date
 import os
 import sys
 
