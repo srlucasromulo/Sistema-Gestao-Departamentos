@@ -5,11 +5,12 @@ class DocumentoView:
 
     @staticmethod
     def toString(documentos):
-
-        string = []
-
+        docs = ''
+        if len(documentos) == 0:
+            return "Nenhum documento encontrado"
         for doc in documentos:
-            print("Nome: " + doc.getNome())
-            print("Caminho: " + doc.getCaminho())
-            print("Tipo: " + doc.getTipo())
-            print("Data: {}".format(doc.getData()))
+            # docs += "Nome: " + doc.getNome() + "\nCaminho: " + doc.getCaminho()+ "\nTipo: " + doc.getTipo() + "\nData: {}".format(doc.getData()) + "\n"
+            docs += "Nome: {} \nCaminho: {} \nTipo: {} \nData: {}/{}/{} \n\n".format(doc.getNome(), doc.getCaminho(), doc.getTipo(), doc.getData().day, doc.getData().month, doc.getData().year)
+            # docs = 'Nome: {}'
+
+        return docs.rstrip()

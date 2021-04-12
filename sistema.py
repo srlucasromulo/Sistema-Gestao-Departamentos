@@ -1,71 +1,45 @@
+import subprocess
 from controller.departamento import DepartamentoController
+from controller.documento import DocumentoController
 from model.creator.creator import Creator
 from view.documento import DocumentoView
-from datetime import datetime
+import os
+import sys
 
 
-def getDocumento():
-    print("Digite as informacoes do arquivo:")
-
-    print("Nome: ")
-    nome = input()
-
-    print("Caminho:")
-    caminho = input()
-    caminho = "/home/lucasromulo/tmp/PDFs/" + caminho
+def getDocumento(caminho, data):
     try:
         arquivo = open(caminho, "r")
-    except FileNotFoundError:
-        print("Arquivo nao encontrado!!")
-        raise Exception
+    except FileNotFoundError: 
+        raise FileNotFoundError('Arquivo não encontrado')
 
-    print("Tipo:")
-    tipo = input()
+    try:
+        dia, mes, ano = map(int, data.split('/'))
+        data = date(ano, mes, dia)
+    except ValueError:
+        raise ValueError("Formato da data inválido")
+    if data > date.today():
+        raise ValueError("Data inválida")
 
-    print("Data(DD/MM/YYYY):")
-    data = input()
-    dia, mes, ano = map(int, data.split('/'))
-    data = datetime(ano, mes, dia)
-    if data > datetime.today():  # acertar isso
-        raise Exception
-
-    return nome, caminho, tipo, data
+    return caminho, data
 
 
-def readDocumento():
-    creator = Creator()
+def buscaDocumento(opt, valor):
     nome = None
     caminho = None
     tipo = None
     data = None
 
-    print("Buscar por qual informacao?:")
-    print("1) Nome")
-    print("2) Caminho")
-    print("3) Tipo")
-    print("4) Data")
-    opt = int(input())
+    if opt == "Nome":
+        nome = valor
+    elif opt == "Caminho":
+        caminho = valor
+    elif opt == "Tipo":
+        tipo = valor
+    elif opt == "Data":
+        data = valor
 
-    if opt not in [1, 2, 3, 4]:
-        print("Opcao invalida!!")
-    else:
-        if opt == 1:
-            print("Digite o nome:")
-            nome = input()
-        if opt == 2:
-            print("Digite o caminho:")
-            caminho = input()
-            caminho = "/home/lucasromulo/tmp/PDFs/" + caminho
-        if opt == 3:
-            print("Digite o tipo:")
-            tipo = input()
-        if opt == 4:
-            print("Digite a data(DD/MM/YYYY):")
-            data = input()
-            dia, mes, ano = map(int, data.split('/'))
-            data = datetime(ano, mes, dia)
-
-    return creator.newDocumento(nome, caminho, tipo, data)
+    return DocumentoController.readDocumento(nome, caminho, tipo, data)
 
 
 def getEntrada():
@@ -84,28 +58,44 @@ def getEntrada():
     return opt
 
 
+def generateJanela(texto):
+    sys.stdout.flush()
+    os.system('./view/interface.sh --show \'' + texto + '\'')
+
+
+def startJanela():
+    sys.stdout.flush()
+    MyOut = subprocess.Popen(['./view/interface.sh'], 
+        stdout=subprocess.PIPE, 
+        stderr=subprocess.STDOUT)
+    stdout,stderr = MyOut.communicate()
+    return stdout.decode().rstrip().split('#')
+
+
 def main():
-    creator = Creator()
     departamento = Creator().getDepartamento()
 
-    opt = getEntrada()
+    while True:
+        texto = ''
+        info = startJanela()
 
-    while opt != 0:
+        if (info[0] == "Sair"):
+            quit()
 
-        if opt == 1:
+        if (info[0] == "CADASTRO"):
             try:
-                info = getDocumento()
-                documento = creator.newDocumento(info[0], info[1], info[2], info[3])
+                documento = DocumentoController.getDocumento(info[1], info[2], info[3], info[4])
                 DepartamentoController.addDocumento(departamento, documento)
-            except Exception:
-                pass
+                texto = "Cadastrado com sucesso"
+            except Exception as e:
+                texto = str(e)
 
-        if opt == 2:
-            documento = readDocumento()
-            documentos = DepartamentoController.readDocumento(departamento, documento)
-            DocumentoView.toString(documentos)
+        if (info[0] == "BUSCA"):
+            documento_busca = buscaDocumento(info[1],info[2])
+            documentos = DepartamentoController.readDocumento(departamento, documento_busca)
+            texto = DocumentoView.toString(documentos)
 
-        opt = getEntrada()
+        generateJanela(texto)
 
 
 if __name__ == "__main__":
